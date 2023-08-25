@@ -42,6 +42,7 @@
                     </li>
                 </ul>
             </div>
+          
             {{-- QUI C'E' LA CHIAMATA A MOBILE E L'OPERATORE TERNARIO PER FAR USCIRE LA SCRITTA GIUSTA --}}
              {{-- <div class="my-5 text-center">
                 <h5>Compatible Devices:</h5>
@@ -87,6 +88,17 @@
             <div class="text-center">
               <span>Link to Project: <a href="#">{{$site->link}}</a></span>
             </div>
+            <div class="col-12 text-center">
+                <h5 class="mt-5">Development's Languages: </h5>
+                <ul class="list-unstyled d-flex flex-row col-12 justify-content-center">
+                    @if($site->technologies)
+                        @foreach($site->technologies as $tech)
+                        <li class="mx-2"><a href="#" class="badge text-bg-warning text-decoration-none">{{$tech->tech_name}}</a></li> 
+                        @endforeach
+                        
+                    @endif
+                </ul>
+           </div>
         </div>
     </div>
 </div>

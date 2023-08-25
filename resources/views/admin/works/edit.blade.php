@@ -76,11 +76,19 @@
                      </label>
                     <select class="form-control" name="type_id" id="type_id">
                         @foreach($types as $type)
-                        <option value="{{$type->id}}">{{$type->category}}</option>
+                        <option value="{{$type->id}}" >{{$type->category}}</option>
                         @endforeach
                     </select>
                 </div>
-                {{-- <div class="form-group my-5">
+                <div class="form-group my-5 d-flex flex-column">
+                    <label  class="control-label mb-3">Development Languages Selection:</label>
+                    <div class="col-7 offset-1">
+                        @foreach($technologies as $tech)
+                        <span >{{$tech->tech_name}}: </span> <input type="checkbox"  name="technologies[]" {{$site->technologies->contains($tech)? 'checked' : ''}} value="{{$tech->id}}" id="" class="form-check-input me-3">
+                        @endforeach
+                    </div>
+                </div>                  
+            {{-- <div class="form-group my-5">
                     <label for="" class="control-label mb-3">
                         Supported Devices:
                      </label>

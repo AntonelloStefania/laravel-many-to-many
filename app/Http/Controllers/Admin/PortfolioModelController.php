@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Types;
+use App\Models\Technology;
 
 
 class PortfolioModelController extends Controller
@@ -45,7 +46,8 @@ class PortfolioModelController extends Controller
     public function create()
     {
         $types=Types::all();
-        return view('admin.works.create', compact('types'));
+        $technologies=Technology::all();
+        return view('admin.works.create', compact('types', 'technologies'));
     }
 
     /**
@@ -66,9 +68,13 @@ class PortfolioModelController extends Controller
             $form_data['image']=$path;
         }
 
+        
         $site->fill($form_data);
-
+        
         $site->save();
+        if($request->has('technologies')){
+            $site->technologies()->sync($request->technologies);
+        }
         return redirect()->route('admin.works.index');
     }
 
@@ -82,8 +88,9 @@ class PortfolioModelController extends Controller
     public function edit($id)
     {
         $site =PortfolioModel::findOrFail($id);
-        $types=Types::all(); //<---------------------------------------HO PASSATO IL VALORE TYPES MA NON SONO SICURO SERVA, DA CONTROLLARE
-       return view('admin.works.edit', compact('site', 'types'));
+        $types=Types::all();
+        $technologies=Technology::all();
+       return view('admin.works.edit', compact('site', 'types','technologies'));
     }
 
     /**
@@ -97,6 +104,7 @@ class PortfolioModelController extends Controller
     {   
         $site = PortfolioModel::findOrFail($id);
         $form_data = $request->all();
+        
 
     //    //OTTENGO LA CATEGORIA SELEZIONATA <--------------------------------------------------------QUI!!
     //     $selectedCategories = $request->input('categories', []);
@@ -109,6 +117,9 @@ class PortfolioModelController extends Controller
             $form_data['image']=$path;
         }
 
+        if($request->has('technologies')){
+            $site->technologies()->sync($request->technologies);
+        }
         
         $site->update($form_data);
         
@@ -123,8 +134,9 @@ class PortfolioModelController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {   
         $site = PortfolioModel::findOrFail($id);
+        $site->technologies()->detach();
         $site->delete();
         return redirect()->route('admin.works.index');
     }
