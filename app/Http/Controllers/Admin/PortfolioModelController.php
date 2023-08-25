@@ -68,7 +68,7 @@ class PortfolioModelController extends Controller
             $form_data['image']=$path;
         }
 
-        
+
         $site->fill($form_data);
         
         $site->save();
@@ -121,8 +121,12 @@ class PortfolioModelController extends Controller
             $site->technologies()->sync($request->technologies);
         }
         
-        $site->update($form_data);
+        if($request->has('technologies')){
+            $site->technologies()->detach();
+            $site->technologies()->attach($request->technologies);
+        }
         
+        $site->update($form_data);
         
         return redirect()->route('admin.works.index');
     }
