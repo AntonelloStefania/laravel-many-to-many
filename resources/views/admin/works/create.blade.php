@@ -72,6 +72,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group my-5 d-flex flex-column">
+                    <label  class="control-label mb-3">Development Languages Selection:</label>
+                    <div class="col-7 offset-1">
+                        @foreach($technologies as $tech)
+                        <span >{{$tech->tech_name}}: </span> <input type="checkbox"  name="technologies[]" {{in_array($tech->id, old('technologies',[])) ? 'checked' : ''}} value="{{$tech->id}}" id="" class="form-check-input me-3">
+                        @endforeach
+                    </div>
+                </div>  
                 {{-- <div class="form-group my-5">
                     <label for="" class="control-label mb-3">
                         Supported Devices:

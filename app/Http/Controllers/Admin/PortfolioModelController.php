@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Types;
+use App\Models\Technology;
 
 
 class PortfolioModelController extends Controller
@@ -45,7 +46,8 @@ class PortfolioModelController extends Controller
     public function create()
     {
         $types=Types::all();
-        return view('admin.works.create', compact('types'));
+        $technologies=Technology::all();
+        return view('admin.works.create', compact('types', 'technologies'));
     }
 
     /**
@@ -66,6 +68,10 @@ class PortfolioModelController extends Controller
             $form_data['image']=$path;
         }
 
+        if($request->has('technologies')){
+            $site->technologies()->attach($request->technologies);
+        }
+
         $site->fill($form_data);
 
         $site->save();
@@ -82,8 +88,9 @@ class PortfolioModelController extends Controller
     public function edit($id)
     {
         $site =PortfolioModel::findOrFail($id);
-        $types=Types::all(); //<---------------------------------------HO PASSATO IL VALORE TYPES MA NON SONO SICURO SERVA, DA CONTROLLARE
-       return view('admin.works.edit', compact('site', 'types'));
+        $types=Types::all();
+        $technologies=Technology::all();
+       return view('admin.works.edit', compact('site', 'types','technologies'));
     }
 
     /**
@@ -97,6 +104,7 @@ class PortfolioModelController extends Controller
     {   
         $site = PortfolioModel::findOrFail($id);
         $form_data = $request->all();
+        
 
     //    //OTTENGO LA CATEGORIA SELEZIONATA <--------------------------------------------------------QUI!!
     //     $selectedCategories = $request->input('categories', []);
@@ -110,8 +118,12 @@ class PortfolioModelController extends Controller
         }
 
         
-        $site->update($form_data);
+        if($request->has('technologies')){
+            $site->technologies()->detach();
+            $site->technologies()->attach($request->technologies);
+        }
         
+        $site->update($form_data);
         
         return redirect()->route('admin.works.index');
     }

@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('portfolio_model_technology', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('work_id');
-            $table->foreign('work_id')->references('id')->on('portfolio_models');
+            $table->unsignedBigInteger('portfolio_model_id');
+            $table->foreign('portfolio_model_id')->references('id')->on('portfolio_models');
 
-            $table->unsignedBigInteger('tech_id');
-            $table->foreign('tech_id')->references('id')->on('technologies');
+            $table->unsignedBigInteger('technology_id');
+            $table->foreign('technology_id')->references('id')->on('technologies');
 
         });
     }
