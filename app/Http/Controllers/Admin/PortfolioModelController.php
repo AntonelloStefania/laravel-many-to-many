@@ -121,11 +121,6 @@ class PortfolioModelController extends Controller
             $site->technologies()->sync($request->technologies);
         }
         
-        if($request->has('technologies')){
-            $site->technologies()->detach();
-            $site->technologies()->attach($request->technologies);
-        }
-        
         $site->update($form_data);
         
         return redirect()->route('admin.works.index');
